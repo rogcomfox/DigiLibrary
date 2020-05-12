@@ -5,6 +5,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.nusantarian.digilibrary.R
@@ -41,9 +42,15 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                 binding.progressCircular.visibility = View.GONE
             } else {
                 firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
+                    if (it.isSuccessful){
 
+                    } else {
+
+                    }
+                    binding.progressCircular.visibility = View.GONE
                 }.addOnFailureListener {
-
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    binding.progressCircular.visibility = View.GONE
                 }
             }
         }
