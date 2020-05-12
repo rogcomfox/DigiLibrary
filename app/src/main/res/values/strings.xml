@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">DigiLibrary</string>
+    <string name="logo">Logo</string>
+    <string name="back">Press Back Again To Exit</string>
+    <!--Landing Fragment Strings-->
+    <string name="tv_landing">Read a book for a better future, for a new knowledge</string>
+    <string name="btn_start">Get Started</string>
+    <string name="tv_login">Already Have Account ? Login</string>
+    <!--Auth Fragment String-->
+    <string name="tv_sign_up">Sign Up !</string>
+    <string name="tv_register_account">Sign up to register account</string>
+    <string name="til_name">Full Name</string>
+    <string name="til_email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="field_empty">This field is Empty</string>
+    <string name="email_not_valid">Email Not Valid</string>
+    <string name="pass_not_match">Password Not Match</string>
+    <string name="pass_below_eight">Password to low, must equal or above 8 characters</string>
+</resources>
