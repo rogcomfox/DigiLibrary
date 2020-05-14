@@ -9,7 +9,6 @@
     <!--Auth Fragment String-->
     <string name="tv_sign_up">Sign Up !</string>
     <string name="tv_register_account">Sign up to register account</string>
-    <string name="til_name">Full Name</string>
     <string name="til_email">Email Address</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -18,4 +17,30 @@
     <string name="email_not_valid">Email Not Valid</string>
     <string name="pass_not_match">Password Not Match</string>
     <string name="pass_below_eight">Password to low, must equal or above 8 characters</string>
+    <!--Register Fragment String-->
+    <string name="til_name">Full Name</string>
+    <string name="success_register">Success Registering Account</string>
+    <string name="failed_register">Failed Registering Account</string>
+    <!--Login Fragment String-->
+    <string name="tv_welcome">Welcome !</string>
+    <string name="tv_login_continue">Login to continue</string>
+    <string name="rb_remember">Remember Me</string>
+    <string name="tv_forgot_pass">Forgot Password?</string>
+    <string name="btn_login">Log In</string>
+    <string name="tv_register_from_login">New User? Sign Up</string>
+    <string name="failed_login">Failed Login Your Account</string>
+    <string name="success_login">Success Login Your Account</string>
+    <!--Forgot Pass Fragment String-->
+    <string name="img_back">Back</string>
+    <string name="tv_text_forgot">Forgot\nPassword</string>
+    <string name="tv_forgot_password_email">Please enter your email address.</string>
+    <string name="tv_forgot_password_email_detail">We will send message to registered email to reset your password</string>
+    <string name="btn_forgot_password">Reset Password</string>
+    <string name="success_to_reset">Success Reset Password</string>
+    <string name="failed_to_reset">Failed Reset Password</string>
+    <string name="message_reset">Please Check Your Email Inbox To Reset Password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
