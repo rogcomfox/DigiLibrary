@@ -1,22 +1,29 @@
-package com.nusantarian.digilibrary.fragment
+package com.nusantarian.digilibrary.fragment.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.digilibrary.R
 import com.nusantarian.digilibrary.databinding.FragmentRegisterBinding
+import com.nusantarian.digilibrary.model.User
 
 class RegisterFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
     private lateinit var firebaseAuth: FirebaseAuth
-    private val empty = activity!!.resources.getString(R.string.field_empty)
+    private lateinit var firebaseFirestore: FirebaseFirestore
+    private lateinit var ft: FragmentTransaction
+    private lateinit var docs: DocumentReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +34,8 @@ class RegisterFragment : Fragment(), View.OnClickListener {
         val view = binding.root
         binding.btnSignUp.setOnClickListener(this)
         firebaseAuth = FirebaseAuth.getInstance()
+        firebaseFirestore = FirebaseFirestore.getInstance()
+        ft = activity!!.supportFragmentManager.beginTransaction()
         return view
     }
 
@@ -41,14 +50,33 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             if (isValid(name, email, pass, conf)) {
                 binding.progressCircular.visibility = View.GONE
             } else {
-                firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
-                    if (it.isSuccessful){
-
-                    } else {
-
-                    }
-                    binding.progressCircular.visibility = View.GONE
-                }.addOnFailureListener {
+                firebaseAuth.createUserWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener { it ->
+                        if (it.isSuccessful) {
+                            val id = firebaseAuth.currentUser?.uid
+                            val user = User(name, email, pass)
+                            docs.collection("Users").document(id!!).set(user)
+                                .addOnCompleteListener {
+                                    Toast.makeText(
+                                        context,
+                                        R.string.success_register,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    ft.replace(R.id.main_frame,
+                                        LoginFragment()
+                                    )
+                                        .addToBackStack(null)
+                                        .commit()
+                                }.addOnFailureListener {
+                                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                                    Log.e("TAG", it.toString())
+                                }
+                        } else {
+                            Toast.makeText(context, R.string.failed_register, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        binding.progressCircular.visibility = View.GONE
+                    }.addOnFailureListener {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                     binding.progressCircular.visibility = View.GONE
                 }
@@ -62,6 +90,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
         pass: String,
         conf: String
     ): Boolean {
+        val empty = activity!!.resources.getString(R.string.field_empty)
         val notValid = activity!!.resources.getString(R.string.email_not_valid)
         val notMatch = activity!!.resources.getString(R.string.pass_not_match)
         val below = activity!!.resources.getString(R.string.pass_below_eight)

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.nusantarian.digilibrary.R
 import com.nusantarian.digilibrary.databinding.ActivityLandingBinding
-import com.nusantarian.digilibrary.fragment.LandingFragment
+import com.nusantarian.digilibrary.fragment.auth.LandingFragment
 
 class LandingActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener {
 
@@ -34,7 +34,9 @@ class LandingActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedL
     private fun getMainFragment() {
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frame, LandingFragment())
+            .replace(R.id.main_frame,
+                LandingFragment()
+            )
             .commit()
     }
 

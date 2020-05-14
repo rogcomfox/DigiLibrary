@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.nusantarian.digilibrary.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
@@ -24,9 +25,17 @@ class SplashActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         setContentView(view)
+    }
 
+    override fun onStart() {
+        super.onStart()
+        val user = FirebaseAuth.getInstance().currentUser
         Handler().postDelayed({
-            startActivity(Intent(this, LandingActivity::class.java))
+            if (user != null) {
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                startActivity(Intent(this, LandingActivity::class.java))
+            }
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }, 1500)
