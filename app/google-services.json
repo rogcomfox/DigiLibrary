@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1091664089256",
+    "firebase_url": "https://digilibrary-66ffc.firebaseio.com",
+    "project_id": "digilibrary-66ffc",
+    "storage_bucket": "digilibrary-66ffc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091664089256:android:040dc0be5a111a56a2b29d",
+        "android_client_info": {
+          "package_name": "com.nusantarian.digilibrary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1091664089256-0p6pnh5omf5dlrlerafvta414h323q9s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWNec0Kz0PajurKQlk9sy3sEidP7XGIHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1091664089256-0p6pnh5omf5dlrlerafvta414h323q9s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
