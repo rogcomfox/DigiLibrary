@@ -36,7 +36,7 @@ class LandingFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         if (v.id == R.id.btn_start) {
-            ft.add(R.id.main_frame,
+            ft.replace(R.id.main_frame,
                 RegisterFragment()
             )
                 .addToBackStack(null)
@@ -49,7 +49,7 @@ class LandingFragment : Fragment(), View.OnClickListener {
         val ss = SpannableString(text)
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                ft.add(R.id.main_frame,
+                ft.replace(R.id.main_frame,
                     LoginFragment()
                 )
                     .addToBackStack(null)
@@ -63,7 +63,7 @@ class LandingFragment : Fragment(), View.OnClickListener {
             }
         }
         //set substring to text view
-        ss.setSpan(clickableSpan, 26, 31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(clickableSpan, 23, 28, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.tvLogin.text = ss
         binding.tvLogin.movementMethod = LinkMovementMethod.getInstance()
     }

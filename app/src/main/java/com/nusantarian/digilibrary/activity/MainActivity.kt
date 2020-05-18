@@ -1,46 +1,46 @@
 package com.nusantarian.digilibrary.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nusantarian.digilibrary.R
 import com.nusantarian.digilibrary.databinding.ActivityMainBinding
-import com.nusantarian.digilibrary.fragment.main.MainFragment
+import com.nusantarian.digilibrary.fragment.main.LibraryFragment
+import com.nusantarian.digilibrary.fragment.main.ProfileFragment
 
-class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private val fragment1: Fragment = LibraryFragment()
+    private val fragment2: Fragment = ProfileFragment()
+    private val fm = supportFragmentManager
+    var active = fragment1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        if (savedInstanceState != null) {
-            initMainFragment()
+        binding.bottomNav.setOnNavigationItemSelectedListener(this)
+        fm.beginTransaction().add(R.id.secondary_frame, fragment2, "2").hide(fragment2).commit()
+        fm.beginTransaction().add(R.id.secondary_frame, fragment1, "1").commit()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_library -> {
+                fm.beginTransaction().hide(active).show(fragment1).commit()
+                active = fragment1
+                return true
+            }
+            R.id.nav_profile -> {
+                fm.beginTransaction().hide(active).show(fragment2).commit()
+                active = fragment2
+                return true
+            }
         }
-        supportFragmentManager.addOnBackStackChangedListener(this)
-    }
-
-    private fun initMainFragment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frame,
-                MainFragment()
-            )
-            .commit()
-    }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) supportFragmentManager.popBackStack()
-        else super.onBackPressed()
-    }
-
-    override fun onBackStackChanged() {
-
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        supportFragmentManager.popBackStack()
-        return true
+        return false
     }
 }

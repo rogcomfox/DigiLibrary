@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.digilibrary.R
 import com.nusantarian.digilibrary.databinding.FragmentRegisterBinding
@@ -23,7 +23,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var ft: FragmentTransaction
-    private lateinit var docs: DocumentReference
+    private lateinit var docs: CollectionReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +36,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
         ft = activity!!.supportFragmentManager.beginTransaction()
+        docs = FirebaseFirestore.getInstance().collection("Users")
         return view
     }
 
@@ -47,7 +48,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             val pass = binding.tilPass.editText?.text.toString()
             val conf = binding.tilConfirmPass.editText?.text.toString()
 
-            if (isValid(name, email, pass, conf)) {
+            if (!isValid(name, email, pass, conf)) {
                 binding.progressCircular.visibility = View.GONE
             } else {
                 firebaseAuth.createUserWithEmailAndPassword(email, pass)
@@ -55,14 +56,15 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                         if (it.isSuccessful) {
                             val id = firebaseAuth.currentUser?.uid
                             val user = User(name, email, pass)
-                            docs.collection("Users").document(id!!).set(user)
+                            docs.document(id!!).set(user)
                                 .addOnCompleteListener {
                                     Toast.makeText(
                                         context,
                                         R.string.success_register,
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    ft.replace(R.id.main_frame,
+                                    ft.replace(
+                                        R.id.main_frame,
                                         LoginFragment()
                                     )
                                         .addToBackStack(null)
@@ -77,9 +79,9 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                         }
                         binding.progressCircular.visibility = View.GONE
                     }.addOnFailureListener {
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                    binding.progressCircular.visibility = View.GONE
-                }
+                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                        binding.progressCircular.visibility = View.GONE
+                    }
             }
         }
     }

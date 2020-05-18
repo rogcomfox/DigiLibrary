@@ -1,19 +1,17 @@
 package com.nusantarian.digilibrary.fragment.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.loopj.android.http.JsonHttpResponseHandler
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nusantarian.digilibrary.R
+import com.nusantarian.digilibrary.activity.ReadActivity
 import com.nusantarian.digilibrary.adapter.BookAdapter
 import com.nusantarian.digilibrary.databinding.FragmentLibraryBinding
-import com.nusantarian.digilibrary.model.Book
-import com.nusantarian.digilibrary.service.BookClient
-import cz.msebera.android.httpclient.Header
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
+import com.nusantarian.digilibrary.model.CustomOnclickListener
 
 
 class LibraryFragment : Fragment() {
@@ -21,7 +19,7 @@ class LibraryFragment : Fragment() {
     private var _binding: FragmentLibraryBinding? = null
     private val binding get() = _binding!!
     private lateinit var bookAdapter: BookAdapter
-    private lateinit var bookClient: BookClient
+    var titleList: ArrayList<String> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,52 +29,33 @@ class LibraryFragment : Fragment() {
         _binding = FragmentLibraryBinding.inflate(inflater, container, false)
         val view = binding.root
         (activity!! as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (activity!! as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
-        (activity!! as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
+        titleList.add("Ancient Structure")
+        titleList.add("Indonesian Ethnic")
+        titleList.add("Phylomemetics of Batik")
+        binding.rvBook.setHasFixedSize(true)
+        binding.rvBook.layoutManager = LinearLayoutManager(context)
 
-        val books: ArrayList<Book> = ArrayList()
-        bookAdapter = BookAdapter(books)
+        fetchData()
         binding.rvBook.adapter = bookAdapter
 
-        fetchBooks()
         return view
-    }
-
-    private fun fetchBooks() {
-        bookClient = BookClient()
-        bookClient.getBooks("Oscar Wilde", object : JsonHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<Header?>?,
-                response: JSONObject?
-            ) {
-                try {
-                    val docs: JSONArray?
-                    if (response != null) {
-                        // Get the docs json array
-                        docs = response.getJSONArray("docs")
-                        // Parse json array into array of model objects
-                        val book = Book()
-                        val books: ArrayList<Book>? = book.fromJson(docs)
-                        // Remove all books from the adapter
-                        books?.clear()
-                        // Load model objects into the adapter
-                        for (book in books!!) {
-                            books.add(book) // add book through the adapter
-                        }
-                        bookAdapter.notifyDataSetChanged()
-                    }
-                } catch (e: JSONException) {
-                    // Invalid JSON format, show appropriate error.
-                    e.printStackTrace()
-                }
-            }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.library_menu, menu)
+    }
+
+    private fun fetchData() {
+        bookAdapter = BookAdapter(context!!, titleList, object : CustomOnclickListener {
+            override fun onClickItem(v: View, position: Int) {
+                val intent = Intent(context, ReadActivity::class.java)
+                intent.putExtra("titles", titleList[position])
+                startActivity(intent)
+
+                Toast.makeText(context, "Clicked" + titleList[position], Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

@@ -25,16 +25,14 @@ class LandingActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedL
         val view = binding.root
         setContentView(view)
 
-        if (savedInstanceState != null) {
-            getMainFragment()
-        }
+        getMainFragment()
         supportFragmentManager.addOnBackStackChangedListener(this)
     }
 
     private fun getMainFragment() {
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frame,
+            .add(R.id.main_frame,
                 LandingFragment()
             )
             .commit()

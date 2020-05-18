@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
+        <activity android:name=".activity.ReadActivity"></activity>
         <activity android:name=".activity.LandingActivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>

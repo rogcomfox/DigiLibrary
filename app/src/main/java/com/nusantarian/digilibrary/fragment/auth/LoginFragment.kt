@@ -42,7 +42,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 binding.progressCircular.visibility = View.VISIBLE
                 val email = binding.tilEmail.editText?.text.toString()
                 val pass = binding.tilPass.editText?.text.toString()
-                if (isValid(email, pass)) {
+                if (!isValid(email, pass)) {
                     binding.progressCircular.visibility = View.GONE
                 } else {
                     firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {

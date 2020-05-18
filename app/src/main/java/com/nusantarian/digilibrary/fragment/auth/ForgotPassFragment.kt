@@ -41,7 +41,7 @@ class ForgotPassFragment : Fragment(), View.OnClickListener {
     private fun resetPass() {
         binding.progressCircular.visibility = View.VISIBLE
         val email = binding.tilEmail.editText?.text.toString()
-        if (isEmailValid(email)) {
+        if (!isEmailValid(email)) {
             binding.progressCircular.visibility = View.GONE
         } else {
             firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
